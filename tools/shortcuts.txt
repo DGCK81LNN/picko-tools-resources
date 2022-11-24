@@ -1,0 +1,7 @@
+# This is a list of shortcuts to the PICKO executable that need to be updated
+# when switching versions, relative to the `tools' directory if relative.
+#
+# Lines that begin with `#' are ignored. Each non-blank line otherwise must end
+# in `.lnk'.
+
+..\PICKO.lnk

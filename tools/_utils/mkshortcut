@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cscript //nologo "$0.vbs" "$@"

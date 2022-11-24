@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Cver: Choose and extract one folder from the specified zip
+
+zip="../resources/$1.zip"
+
+if [ ! -f "$zip" ]; then
+  echo "$(s 2)cver: Collection does not exist$(s)" >&2
+  exit 1
+fi
+
+# List toplevel folders in zip in alphabetical order
+readarray -t vers <<< "$(zipinfo -1 "$zip" '*/' | sort)"
+
+for _ in ''; do
+  # Choose a folder (do not display slashes)
+  select ver in "${vers[@]/\/}"; do
+    # Keep prompting until input is valid
+    if [ "$ver" ]; then break 2; fi
+  done
+  exit 125
+done
+
+s 2 # Dimmed text
+echo "cver: extract files from zip"
+unzip -q "$zip" "$ver/**" -d .cvertmp/ && # Extract chosen folder
+( echo "cver: move extracted files"
+  mv ".cvertmp/$ver"/* ../game/
+) &&
+rmdir ".cvertmp/$ver"
+stat=$?
+s # End dimmed text
+
+_utils/cverlog "$1: $ver"
+
+exit $stat
